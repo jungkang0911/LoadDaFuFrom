@@ -4,7 +4,9 @@
       <!-- Logo 與標題區 -->
       <div class="text-center mb-8">
         <div class="mb-6">
-          <img src="/logo.png" alt="Logo" class="mx-auto h-24 md:h-32 w-auto object-contain">
+          <a href="https://www.loanhusband.com/" target="_blank" rel="noopener noreferrer" class="inline-block">
+            <img src="/logo.png" alt="Logo" class="mx-auto h-24 md:h-32 w-auto object-contain">
+          </a>
         </div>
         <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">資金需求申請表</h1>
         <p class="text-slate-300">請詳細填寫以下資料，我們將儘速為您處理</p>
@@ -13,11 +15,31 @@
       <!-- 成功訊息 -->
       <div v-if="submitted" class="bg-white rounded-lg shadow-2xl p-12 text-center">
         <div class="mb-6">
-          <img src="/logo.png" alt="Logo" class="mx-auto h-20 w-auto object-contain opacity-50">
+          <a href="https://www.loanhusband.com/" target="_blank" rel="noopener noreferrer" class="inline-block">
+            <img src="/logo.png" alt="Logo" class="mx-auto h-20 w-auto object-contain opacity-50">
+          </a>
         </div>
         <div class="text-green-500 text-6xl mb-4">✓</div>
         <h2 class="text-3xl font-bold text-slate-800 mb-2">申請已送出</h2>
         <p class="text-slate-600">我們已收到您的申請，將盡快與您聯繫</p>
+
+        <div class="mt-8 pt-8 border-t border-slate-200">
+          <p class="text-lg font-semibold text-slate-800 mb-2">加入 LINE 好友查詢申請進度</p>
+          <p class="text-sm text-slate-600 mb-4">請掃描下方 QRCode，加入後可由專人協助您查詢案件進度</p>
+          <a :href="lineAddFriendUrl" target="_blank" rel="noopener noreferrer" class="inline-block">
+            <img :src="lineQrCodeUrl" alt="LINE 加好友 QRCode" class="mx-auto w-44 h-44 rounded-lg border border-slate-200 p-2">
+          </a>
+          <div class="mt-4">
+            <a
+              :href="lineAddFriendUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200"
+            >
+              前往加入 LINE 好友
+            </a>
+          </div>
+        </div>
       </div>
 
       <!-- 表單 -->
@@ -302,12 +324,87 @@
           </button>
         </div>
       </form>
+
+      <footer class="mt-8 bg-slate-900/70 border border-slate-700 rounded-lg text-slate-200">
+        <div class="px-6 py-5 border-b border-slate-700">
+          <h3 class="text-lg font-bold text-white">貸丈夫</h3>
+          <p class="text-sm text-slate-300 mt-1">資金週轉 · 案件媒合</p>
+        </div>
+
+        <div class="px-6 py-5 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+          <div>
+            <p class="font-semibold text-white mb-2">服務</p>
+            <ul class="space-y-1 text-slate-300">
+              <li>私人借貸</li>
+              <li>房屋融資</li>
+              <li>車貸信貸</li>
+              <li>案件媒合</li>
+            </ul>
+          </div>
+
+          <div>
+            <p class="font-semibold text-white mb-2">法律</p>
+            <ul class="space-y-1 text-slate-300">
+              <li>隱私權政策</li>
+              <li>免責聲明</li>
+              <li>服務條款</li>
+            </ul>
+          </div>
+
+          <div>
+            <p class="font-semibold text-white mb-2">聯絡我們</p>
+            <ul class="space-y-1 text-slate-300">
+              <li>
+                <a
+                  href="https://line.me/R/ti/p/@413fbqic"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="underline hover:text-white"
+                >
+                  LINE：@413fbqic
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.facebook.com/people/%E8%B2%B8%E4%B8%88%E5%A4%AB/61588400938515/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="underline hover:text-white"
+                >
+                  Facebook 社團：貸丈夫
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="px-6 py-4 border-t border-slate-700 text-xs text-slate-400">
+          © 2024 貸丈夫. All rights reserved.
+        </div>
+      </footer>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+
+const lineAddFriendUrl = 'https://line.me/R/ti/p/@413fbqic'
+const lineQrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(lineAddFriendUrl)}`
+
+const shouldShowSubmittedFromUrl = () => {
+  if (typeof window === 'undefined') {
+    return false
+  }
+
+  const params = new URLSearchParams(window.location.search)
+  const enabledValues = ['1', 'true', 'yes', 'y']
+
+  return ['submitted', 'success', 'done'].some((key) => {
+    const value = params.get(key)
+    return value ? enabledValues.includes(value.toLowerCase()) : false
+  })
+}
 
 const form = ref({
   name: '',
@@ -348,7 +445,7 @@ const form = ref({
 })
 
 const loading = ref(false)
-const submitted = ref(false)
+const submitted = ref(shouldShowSubmittedFromUrl())
 
 const handleSubmit = async () => {
   loading.value = true
