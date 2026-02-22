@@ -39,6 +39,18 @@
               前往加入 LINE 好友
             </a>
           </div>
+          <p class="mt-4 text-sm text-slate-600">
+            若想自行查詢案件進度，也可前往
+            <a
+              href="https://www.loanhusband.com/progress-query"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="underline hover:text-slate-800 ml-1"
+            >
+              進度查詢頁面
+            </a>
+            。
+          </p>
         </div>
       </div>
 
@@ -354,6 +366,16 @@
           <div>
             <p class="font-semibold text-white mb-2">聯絡我們</p>
             <ul class="space-y-1 text-slate-300">
+              <li>
+                <a
+                  href="https://www.loanhusband.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="underline hover:text-white"
+                >
+                  官網：貸丈夫
+                </a>
+              </li>
               <li>
                 <a
                   href="https://line.me/R/ti/p/@413fbqic"
